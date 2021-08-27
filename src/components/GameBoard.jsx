@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Tile from './Tile'
 
 const BOARD_SIZE = 14
-const TILE_SIZE = 5
+const TILE_SIZE = 50
 export default function GameBoard() {
     const [mousePosition, setMousePosition] = useState([0,0])
     const [gameBoard, setGameBoard ] = useState([])
@@ -34,13 +34,13 @@ export default function GameBoard() {
                     Foundation
                 </h1>
                 <button onClick={()=>_handleStart()}>Start Game</button>
-                <div onMouseMove={(e)=>_handleMouseMove([e.clientY, e.clientX])} className="gameboard-container">
+                <div onMouseMove={(e)=>_handleMouseMove([e.clientX,e.clientY])} className="gameboard-container">
                     {gameBoard.map((tileArray,key)=>(
                         <div className="row" key={key}>
                             {gameBoard[key].map((tile,key2)=>(
                                 <Tile key={key2} location={[key,key2]}
                                 coordinates={mousePosition}
-                                    background={'green'}/>
+                                    background={tile.background}/>
                             ))}
                         </div>
                     ))}
