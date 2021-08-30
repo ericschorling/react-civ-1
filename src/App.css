@@ -129,9 +129,77 @@ button {
   justify-content: center;
 }
 
-.grass-tile{
+.grass{
   background: green;
     height: 50px;
     width: 50px;
     border: 1px solid black;
+}
+
+.house{
+  background-image: url("assets/house.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+}
+
+.castlelt {
+  background-image: url("assets/castlelt.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  border-style: none;
+  height: 50px;
+  width: 50px;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+}
+
+.castlert{
+  background-image: url("assets/castlert.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 50px;
+  width: 50px;
+  border-top: 2px solid black;
+  border-right: 2px solid black;
+}
+
+.castellb{
+  background-image: url("assets/castlelb.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 51px;
+  width: 50px;
+  border-bottom: 1px solid black;
+  border-left: 2px solid black;    
+}
+
+.castlerb{
+  background-image: url("assets/castlerb.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 51px;
+  width: 50px;
+  border-bottom: 1px solid black;
+  border-right: 2px solid black;
+}
+
+.farm{
+  background-image: url("assets/farm.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+}
+
+.barracks{
+  background-image: url("assets/barracks.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
 }

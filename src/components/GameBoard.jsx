@@ -29,6 +29,7 @@ export default function GameBoard() {
             for(let y = 0; y< BOARD_SIZE; y++){
                 tile.style = isPlayerCastle([x,y])
                 gameBoardArray[x].push(tile)
+                console.log(tile.style)
             }
         }
         dispatch(setGameState(true))
@@ -80,7 +81,8 @@ export default function GameBoard() {
                                         location={[key,key2]}
                                         coordinates={mousePosition}
                                         style={tile.style}
-                                    >{tile.size}</Tile>
+                                        className={tile.style}
+                                    />
 
                                 ))}
                             </div>

@@ -119,22 +119,22 @@ const isPlayerCastle =  (position)=>{
     }
     else if (position[0] === 2){
         if(position[1] === 2){
-            return CastleLeftTopStyle
+            console.log(true)
+            return "castlelt"
         }
         if(position[1] === 3){
-            return CastleRightTopStyle
+            return "castlert"
         }
     }
     else if (position[0] === 3){
         if(position[1] === 2){
-            return CastleLeftBottomStyle
+            return "castellb"
         }
         if(position[1] === 3){
-            return CastleRightBottomStyle
+            return "castlerb"
         }
-    }else {
-        return "grass"
     }
+    return "grass"
     
 }
 
