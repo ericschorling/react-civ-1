@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import gameboardReducer from '../features/gameboard/gameboardSlice'
+import playerReducer from '../features/gameboard/playerSlice'
 
 export default configureStore({
     reducer: {
-        gameboard: gameboardReducer,
-
+        gameBoard: gameboardReducer,
+        players: playerReducer
     },
 })

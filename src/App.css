@@ -1,5 +1,7 @@
 .App {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .App-logo {
@@ -12,16 +14,33 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
+nav{
+  display: flex;
+  justify-content: center;
+}
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+
+button {
+  width: 200px;
+  background-color: cadetblue;
+  color: white
+}
+
+.turn-counter{
+  position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  top: 0;
+  z-index: 999;
+  width: 100%;
+  height: 23px;
+  margin-right: 29px;
+}
+.game-info{
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
 .App-link {
@@ -37,9 +56,6 @@
   }
 }
 .tile {
-  border: 1px solid black;
-  height: 50px;
-  width: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -48,15 +64,13 @@
 .gameboard-container{
   display: flex;
   align-items: center;
-  
   flex-direction: column;
   height: auto;
 }
 
-.row{
+.game-space {
   display: flex;
-  
-  
+  flex-direction: row;
 }
 
 .div-button{
@@ -64,8 +78,25 @@
   align-items: center;
   justify-content: center;
   border: 2px solid blue;
+  border-radius: 4px;
   height: 20px;
   width: 50px;
+
+}
+.board-header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.footer-bar {
+  margin-top: 50px;
+  height: 200px;
+}
+
+.row{
+  display: flex;
 }
 
 .modal{
@@ -74,3 +105,33 @@
   background-color: burlywood;
 }
 
+.building-modal-container {
+  display:flex;
+  flex-direction: column;
+}
+
+.modal-title{
+  display: flex;
+  justify-content: center;
+}
+
+.building-item{
+  display:flex;
+  align-items: center;
+}
+
+.building-image{
+  margin-right: 5px;
+}
+
+.button-modal-container{
+  display: flex;
+  justify-content: center;
+}
+
+.grass-tile{
+  background: green;
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+}
