@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import Tile from './Tile'
 import { isPlayerCastle } from '../styles/tileStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import {setGameState, updateGameBoard, incrementTurn} from '../features/gameboard/gameboardSlice'
+import {setGameState, updateGameBoard, incrementTurn, updateBuildingTurn} from '../features/gameboard/gameboardSlice'
 import { PlayerInformation } from './PlayerInformation'
+import { updateBuildingQueue } from '../app/functions/handleTurnEnd'
+import { updatePlayerBuildingTurns, updatePlayerBuilding, updatePlayerTraingingSpeeds } from '../features/gameboard/playerSlice'
 
 const BOARD_SIZE = 14
 const TILE_SIZE = 50
@@ -13,21 +15,22 @@ export default function GameBoard() {
     const [mousePosition, setMousePosition] = useState([0,0])
     //const [gameBoard, setGameBoard ] = useState([])
     const board = useSelector((state) => state.gameBoard.board)
+    const pbuildingqueue = useSelector((state) => state.players.playerBuildingQueue)
     const gameState = useSelector((state) => state.gameBoard.gameState)
     const dispatch = useDispatch()
     
-    let tile = {
-        size: TILE_SIZE,
-        style: undefined,
-        background: "green",
-        feature: undefined
-    }
+    
     const createNewGameBoard = ()=> {
         let gameBoardArray = []
         for(let x = 0; x<BOARD_SIZE; x++){
             gameBoardArray.push([])
             for(let y = 0; y< BOARD_SIZE; y++){
-                tile.style = isPlayerCastle([x,y])
+                let style = isPlayerCastle([x,y])
+                let tile = {
+                    style: style,
+                    turn: 0,
+                    buildstyle: style
+                }
                 gameBoardArray[x].push(tile)
                 console.log(tile.style)
             }
@@ -46,6 +49,18 @@ export default function GameBoard() {
     }
 
     const _handleTurnEnd =()=>{
+        if(pbuildingqueue) {
+            if(pbuildingqueue[0].turns>0){
+                dispatch(updatePlayerBuildingTurns())
+                dispatch(updateBuildingTurn(pbuildingqueue[0].location))
+                if(pbuildingqueue[0].turns===1){
+                    let newQueue = pbuildingqueue.map((building) => building)
+                    newQueue.splice(0,1)
+                    dispatch(updatePlayerBuilding(newQueue))
+                }
+            }
+        }
+        dispatch(updatePlayerTraingingSpeeds("worker"))
         dispatch(incrementTurn())
 
     }
@@ -82,7 +97,7 @@ export default function GameBoard() {
                                         coordinates={mousePosition}
                                         style={tile.style}
                                         className={tile.style}
-                                    />
+                                    ></Tile>
 
                                 ))}
                             </div>

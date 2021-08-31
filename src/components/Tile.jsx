@@ -1,28 +1,23 @@
 import React, { useState } from 'react'
 import ReactModal from 'react-modal'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateGameTile, updateGameBoard } from '../features/gameboard/gameboardSlice'
-import {isPlayerCastle,  selectStyle} from '../styles/tileStyles'
+import {updateGameBoard } from '../features/gameboard/gameboardSlice'
 import { copyGameBoard } from '../app/functions/copyBoard'
-const TOP_MARGIN = 102
-const TILE_SIZE = 52
+import { updatePlayerBuilding } from '../features/gameboard/playerSlice'
+// const TOP_MARGIN = 102
+// const TILE_SIZE = 52
 const BUILDING_ARRAY = ["farm", "house", "barracks"]
 
 
-const updateBoard =(board, style , location) =>{
-    let newBoard
-    newBoard = board.map((row)=> newBoard.push([...row]))
-    newBoard[location[0]][location[1]] = 1
-    return newBoard
-}
 
 export default function Tile(props){
     const board = useSelector((state) => state.gameBoard.board)
     const tileData = board[props.location[0]][props.location[1]]
     const [modalOpenState, setModalOpenState] = useState(false)
-    const [TileStyle, setTileStyle] = useState(selectStyle(tileData.style))
     const [mousePosition, setMousePosition] = useState([0,0])
     const dispatch = useDispatch()
+    const playerBuildQueue = useSelector((state)=>state.players.playerBuildingQueue)
+    const buildingSpeed = useSelector((state)=> state.players.playerBuildingSpeeds)
 
     
     const _handleModalClick=()=>{
@@ -35,22 +30,33 @@ export default function Tile(props){
     }
     
     const _handleBuildClick=(building)=>{
+        let newBuilding = {
+            building: building,
+            turns: buildingSpeed[building],
+            location: props.location
+        }
         let newBoard = copyGameBoard(board)
-        console.log(newBoard)
-        newBoard[props.location[0]][props.location[1]].style = building
+        let tile = {
+            style: "building",
+            turn: buildingSpeed[building],
+            buildstyle: building
+        }
+        newBoard[props.location[0]][props.location[1]] = tile
         dispatch(updateGameBoard(newBoard))
-        console.log(newBoard)
-        console.log(board)
-        setTileStyle(selectStyle(tileData.style))
+        
+        let newQueue = playerBuildQueue.map((building) => building)
+        newQueue.push(newBuilding)
+        dispatch(updatePlayerBuilding(newQueue))
         setModalOpenState(false)
     }
     
     return (
         <>
             
-            <div className={tileData.style}
+            <div className={tileData.turn ? tileData.style : tileData.buildstyle}
                 onClick={()=>board[props.location[0]][props.location[1]].style === "grass" ? _handleTileClick(props.location, props.coordinates) : null}
                 >
+                {tileData.turn ? tileData.turn : null}
             </div>
         
             <ReactModal
@@ -74,7 +80,7 @@ export default function Tile(props){
                             src={`assets/${building}.jpg`} 
                             onClick={()=>_handleBuildClick(building)}
                         ></img>
-                        <span>{`${building} (3 turns)`}</span>
+                        <span>{`${building} (${buildingSpeed[building]} turns)`}</span>
                     </div>
                 ))}
             </div>

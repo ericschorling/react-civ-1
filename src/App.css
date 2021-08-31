@@ -203,3 +203,12 @@ button {
   width: 50px;
   border: 1px solid black;
 }
+
+.building{
+  background-image: url("assets/building.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;  
+}

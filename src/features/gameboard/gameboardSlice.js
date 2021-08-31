@@ -21,12 +21,15 @@ export const gameboardSlice = createSlice({
         setGameState: (state, action) =>{
             state.gameState = action.payload
         },
+        updateBuildingTurn: (state, action)=>{
+            state.board[action.payload[0]][action.payload[1]].turn -=1
+        },
         updateGameTile: (state, action)=>{
             state.board[action.payload[0]][action.payload[1]].style = action.payload[2]
         }
     }
 })
 
-export const { updateGameBoard, incrementTurn, setGameState, updateGameTile } = gameboardSlice.actions
+export const { updateGameBoard, incrementTurn, setGameState, updateGameTile, updateBuildingTurn } = gameboardSlice.actions
 
 export default gameboardSlice.reducer
