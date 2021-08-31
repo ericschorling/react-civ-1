@@ -14,31 +14,43 @@ export default function Tile(props){
     const board = useSelector((state) => state.gameBoard.board)
     const tileData = board[props.location[0]][props.location[1]]
     const [modalOpenState, setModalOpenState] = useState(false)
-    const [mousePosition, setMousePosition] = useState([0,0])
     const dispatch = useDispatch()
     const playerBuildQueue = useSelector((state)=>state.players.playerBuildingQueue)
     const buildingSpeed = useSelector((state)=> state.players.playerBuildingSpeeds)
+    const unitModifier = useSelector ((state) => state.players.modifiers.units)
+    const currentUnits = useSelector((state)=>state.players.playerUnits)
 
-    
+    const getSpeedModifiers =(building)=>{
+        let turns = 0
+        for(const unit of currentUnits){
+            if(unit.unit === "worker"){
+                turns += unitModifier.worker.building_modifier
+            }
+        }
+        
+        let buildTurns = buildingSpeed[building] + turns
+
+        return buildTurns <= 0 ? 1 : buildTurns
+    }
     const _handleModalClick=()=>{
         setModalOpenState(false)
     }
     const _handleTileClick=(position,coordinates)=>{
         console.log("Clicked at " + position + coordinates)
-        setMousePosition(coordinates) 
         setModalOpenState(true)      
     }
     
     const _handleBuildClick=(building)=>{
+        let buildingTurns = getSpeedModifiers(building)
         let newBuilding = {
             building: building,
-            turns: buildingSpeed[building],
+            turns: buildingTurns,
             location: props.location
         }
         let newBoard = copyGameBoard(board)
         let tile = {
             style: "building",
-            turn: buildingSpeed[building],
+            turn: buildingTurns,
             buildstyle: building
         }
         newBoard[props.location[0]][props.location[1]] = tile
@@ -64,8 +76,8 @@ export default function Tile(props){
                     content: {
                         height:'240px',
                         width: '220px',
-                        top: `${mousePosition[1]}px`,
-                        left: `${mousePosition[0]}px`
+                        top: window.innerHeight/2,
+                        left: window.innerWidth/2
                     }
                 }}
                 isOpen={modalOpenState} 
@@ -80,7 +92,7 @@ export default function Tile(props){
                             src={`assets/${building}.jpg`} 
                             onClick={()=>_handleBuildClick(building)}
                         ></img>
-                        <span>{`${building} (${buildingSpeed[building]} turns)`}</span>
+                        <span>{`${building} (${getSpeedModifiers(building)} turns)`}</span>
                     </div>
                 ))}
             </div>

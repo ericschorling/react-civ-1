@@ -32,9 +32,7 @@ function App() {
               <Home/>
             </Route>
             <Route path='/Foundation'>
-            <div>
               <GameBoard/>
-            </div>
             </Route>
           </Switch>
           </div>
