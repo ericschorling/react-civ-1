@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-const CASTLE_POSTION_ARRAY_PLAYER= [[10,10],[10,11],[11,10],[11,11]]
+//const CASTLE_POSTION_ARRAY_PLAYER= [[10,10],[10,11],[11,10],[11,11]]
 
 
 

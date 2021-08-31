@@ -1,17 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Tile from './Tile'
 import { isPlayerCastle } from '../styles/tileStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import {setGameState, updateGameBoard, incrementTurn, updateBuildingTurn} from '../features/gameboard/gameboardSlice'
 import { PlayerInformation } from './PlayerInformation'
-import { updatePlayerBuildingTurns, updatePlayerBuilding, updatePlayerTraingingSpeeds, updatePlayerUnitTurns, updatePlayerTraining, addPlayerUnits, updatePlayerBuiltBuildings } from '../features/gameboard/playerSlice'
+import { updatePlayerBuildingTurns, updatePlayerBuilding, updatePlayerUnitTurns, updatePlayerTraining, addPlayerUnits, updatePlayerBuiltBuildings } from '../features/gameboard/playerSlice'
 
 const BOARD_SIZE = 14
-const TILE_SIZE = 50
 
 
 export default function GameBoard() {
-    const [mousePosition, setMousePosition] = useState([0,0])
     //const [gameBoard, setGameBoard ] = useState([])
     const board = useSelector((state) => state.gameBoard.board)
     const pbuildingqueue = useSelector((state) => state.players.playerBuildingQueue)
@@ -44,9 +42,6 @@ export default function GameBoard() {
         dispatch(incrementTurn("new game"))
         dispatch(updateGameBoard(createNewGameBoard()))
         
-    }
-    const _handleMouseMove=(coordinates)=>{
-        setMousePosition(coordinates)
     }
 
     const _handleTurnEnd =()=>{
@@ -111,7 +106,6 @@ export default function GameBoard() {
                                 <Tile 
                                     key={key2} 
                                     location={[key,key2]}
-                                    coordinates={mousePosition}
                                     style={tile.style}
                                     className={tile.style}
                                 ></Tile>
