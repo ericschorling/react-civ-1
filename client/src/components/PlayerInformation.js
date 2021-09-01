@@ -31,7 +31,9 @@ export const PlayerInformation =() => {
                 <div className="tab" onClick={()=>setPage("building")}>Buildings ({buildingQueue.length ? buildingQueue.length : 0})</div>
             </nav>
             
-            {page === 'training' ? <TrainingQueue/> :
+            {page === 'training' ? 
+                
+            <TrainingQueue/> :
             <BuildQueue/>}
         </div>
     )

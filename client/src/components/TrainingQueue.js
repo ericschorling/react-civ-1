@@ -8,6 +8,7 @@ export const TrainingQueue = () => {
     const trainedUnits = useSelector((state)=>(state.players.playerUnits))
     const buildingModifiers = useSelector((state)=>(state.players.modifiers.buildings))
     const currentBuildings = useSelector((state)=> (state.players.playerBuildings))
+    const playerPopulation = useSelector((state)=> (state.players.playerPopulation))
     const dispatch = useDispatch()
 
     const setUnitTrainingSpeed =(unit)=>{
@@ -38,8 +39,8 @@ export const TrainingQueue = () => {
     return (
         <>
             <h2>Train Units</h2>
+            {playerPopulation === trainedUnits.length ? <div className="popWarning">Your Population is Full</div> : null}
             <div className="unit-display">
-                <div className="popWarning">Your Population is Full</div>
                 <div className="queue-image">
                     <img
                         alt="unit"

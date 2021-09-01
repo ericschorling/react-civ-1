@@ -8,7 +8,12 @@ export const playerSlice = createSlice({
         playerPopulation: 4,
         enemyPopulation: 4,
         playerTrainingQueue: [],
-        enemyTrainingQueue: [],
+        enemyTrainingQueue: [
+            {
+                unit:"worker",
+                turns:4
+            }
+        ],
         playerBuildingQueue:[],
         enemyBuildingQueue:[],
         playerBuildingSpeeds:{
@@ -56,15 +61,14 @@ export const playerSlice = createSlice({
         playerBuildings: [],
         playerUnits: [],
         enemyBuildings:[],
+        enemyBuildingLocations:[[0,0],[0,1],[0,2],[0,3],[0,4],[0,5],[1,0],[1,1],[1,2],[1,3],[1,4],[1,5],[2,0],[2,1],[2,4],[2,5],[3,0],[3,1],[3,4],[3,5],[4,0],[4,1],[4,2],[4,3],[4,4],[4,5],[5,0],[5,1],[5,2],[5,3],[5,4],[5,5]],
         enemyUnits:[],
         enemyBuildingSpeeds:{
-            house: 3,
+            house: 4,
             farm: 5,
-            barracks: 7
-        },
-        enemyTrainingSpeeds:{
-            worker: 4,
-            warrior: 7
+            barracks: 6,
+            worker: 3,
+            warrior: 8
         }
     },
     reducers: {
@@ -114,10 +118,69 @@ export const playerSlice = createSlice({
         updateEnemyPopulation: (state, action)=>{
             state.enemyPopulation += action.payload
         },
+        addEnemyUnit: (state, action)=>{
+            state.enemyUnits.push(action.payload)
+        },
+        updateEnemyUnits: (state, action)=>{
+            state.enemyUnits = action.payload
+        },
+        updateEnemyUnitTurns:(state)=>{
+            state.enemyTrainingQueue[0].turns -= 1
+        },
+        addEnemyUnitTraining: (state, action)=>{
+            state.enemyTrainingQueue.push(action.payload)
+        },
+        updateEnemyTrainingQueue: (state, action)=>{
+            state.enemyTrainingQueue = action.payload
+        },
+        updateEnemyBuildingLocations:(state, action)=>{
+            state.enemyBuildingLocations = action.payload
+        },
+        addEnemyBuildingQueue:(state, action)=>{
+            state.enemyBuildingQueue.push(action.payload)
+        },
+        updateEnemyBuildingTurn: (state, action)=>{
+            state.enemyBuildingQueue[0].turns -= 1
+        },
+        updateEnemyBuildingQueue:(state, action)=>{
+            state.enemyBuildingQueue = action.payload
+        },
+        addEnemyBuilding:(state, action)=>{
+            state.enemyBuildings.push(action.payload)
+        },
+        updateEnemyBuildings:(state, action)=>{
+            state.enemyBuildings = action.payload
+        }
 
     }
 })
 
-export const { updatePlayerTrainingQueue, updatePlayerBuilding, updatePlayerTraingingSpeeds, updatePlayerBuildingTurns, updatePlayerBuiltBuildings, updatePlayerUnitTurns, updatePlayerTraining, addPlayerUnits, clearPlayerBuildings, clearPlayerUnits, updatePlayerHeath, udpateEnemyHealth, updateEnemyPopulation, updatePlayerPopulation } = playerSlice.actions
+export const { 
+    updatePlayerTrainingQueue, 
+    updatePlayerBuilding, 
+    updatePlayerTraingingSpeeds, 
+    updatePlayerBuildingTurns, 
+    updatePlayerBuiltBuildings, 
+    updatePlayerUnitTurns, 
+    updatePlayerTraining, 
+    addPlayerUnits, 
+    clearPlayerBuildings, 
+    clearPlayerUnits, 
+    updatePlayerHeath, 
+    udpateEnemyHealth, 
+    updateEnemyPopulation, 
+    updatePlayerPopulation,
+    addEnemyUnit,
+    updateEnemyUnits,
+    updateEnemyUnitTurns,
+    addEnemyUnitTraining,
+    updateEnemyTrainingQueue,
+    updateEnemyBuildingLocations,
+    updateEnemyBuildingQueue,
+    updateEnemyBuildingTurn,
+    updateEnemyBuildings,
+    addEnemyBuilding,
+    addEnemyBuildingQueue
+} = playerSlice.actions
 
 export default playerSlice.reducer

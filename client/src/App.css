@@ -73,7 +73,14 @@ button {
 .homepage{
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   
+}
+.game-tutorial{
+  display:flex;
+  align-items: center;
+  flex-direction: column;
 }
 .player-container{
   display: flex;
@@ -100,6 +107,11 @@ button {
 .enemy-information{
   display: flex;
   width:20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  
 }
 
 .unit-display{
@@ -279,3 +291,4 @@ button {
   border-top-right-radius: 5px;
   min-width: 50%;
 }
+
