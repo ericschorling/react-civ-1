@@ -39,23 +39,26 @@ export const TrainingQueue = () => {
         <>
             <h2>Train Units</h2>
             <div className="unit-display">
+                <div className="popWarning">Your Population is Full</div>
                 <div className="queue-image">
-                <img
-                    alt="unit"
-                    src="assets/worker.jpg"
-                    onClick={()=>_handleBuildUnit("worker")}>
+                    <img
+                        alt="unit"
+                        src="assets/worker.jpg"
+                        onClick={()=>_handleBuildUnit("worker")}>
 
-                </img>
-                    worker
+                    </img>
+                    <p>worker </p>
+                    <p>{setUnitTrainingSpeed("worker")} turns</p>
                 </div>
                 <div className="queue-image">
-                <img
-                    alt="unit"
-                    src="assets/warrior.jpg"
-                    onClick={()=>_handleBuildUnit("warrior")}>
+                    <img
+                        alt="unit"
+                        src="assets/warrior.jpg"
+                        onClick={()=>_handleBuildUnit("warrior")}>
 
-                </img>
-                    warrior
+                    </img>
+                    <p>warrior</p>
+                    <p>{setUnitTrainingSpeed("warrior")} turns</p>
                 </div>
             </div>
             <h2>Training Queue</h2>

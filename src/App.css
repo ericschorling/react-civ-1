@@ -80,13 +80,14 @@ button {
   flex-direction: column;
   align-items: flex-start;
   min-width: 200px;
-  width: 300px;
+  width: 20%;
 }
 .gameboard-container{
   display: flex;
   align-items: center;
   flex-direction: column;
   height: auto;
+  width: 60%
 }
 .game-space {
   display: flex;
@@ -98,13 +99,16 @@ button {
 
 .enemy-information{
   display: flex;
-  
+  width:20%;
 }
 
 .unit-display{
   display: flex;
   flex-direction: row;
   flex-wrap:wrap;
+}
+.unit-display p{
+  margin: 2px;
 }
 .queue-image{
   display: flex;

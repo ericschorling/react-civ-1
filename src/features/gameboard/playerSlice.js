@@ -3,6 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 export const playerSlice = createSlice({
     name: 'players',
     initialState: {
+        playerHealth: 100,
+        enemyHealth: 100,
+        playerPopulation: 4,
+        enemyPopulation: 4,
         playerTrainingQueue: [],
         enemyTrainingQueue: [],
         playerBuildingQueue:[],
@@ -91,10 +95,29 @@ export const playerSlice = createSlice({
         },
         updatePlayerBuiltBuildings: (state, action)=>{
             state.playerBuildings.push(action.payload)
-        }
+        },
+        clearPlayerBuildings: (state)=> {
+            state.playerBuildings = []
+        },
+        clearPlayerUnits: (state)=>{
+            state.playerUnits =[]
+        },
+        updatePlayerHeath: (state, action) =>{
+            state.playerHealth -= action.payload
+        },
+        udpateEnemyHealth: (state, action) =>{
+            state.enemyHealth -= action.payload
+        },
+        updatePlayerPopulation: (state, action)=>{
+            state.playerPopulation += action.payload
+        },
+        updateEnemyPopulation: (state, action)=>{
+            state.enemyPopulation += action.payload
+        },
+
     }
 })
 
-export const { updatePlayerTrainingQueue, updatePlayerBuilding, updatePlayerTraingingSpeeds, updatePlayerBuildingTurns, updatePlayerBuiltBuildings, updatePlayerUnitTurns, updatePlayerTraining, addPlayerUnits } = playerSlice.actions
+export const { updatePlayerTrainingQueue, updatePlayerBuilding, updatePlayerTraingingSpeeds, updatePlayerBuildingTurns, updatePlayerBuiltBuildings, updatePlayerUnitTurns, updatePlayerTraining, addPlayerUnits, clearPlayerBuildings, clearPlayerUnits, updatePlayerHeath, udpateEnemyHealth, updateEnemyPopulation, updatePlayerPopulation } = playerSlice.actions
 
 export default playerSlice.reducer

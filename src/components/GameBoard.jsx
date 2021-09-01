@@ -4,7 +4,7 @@ import { isPlayerCastle } from '../styles/tileStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import {setGameState, updateGameBoard, incrementTurn, updateBuildingTurn} from '../features/gameboard/gameboardSlice'
 import { PlayerInformation } from './PlayerInformation'
-import { updatePlayerBuildingTurns, updatePlayerBuilding, updatePlayerUnitTurns, updatePlayerTraining, addPlayerUnits, updatePlayerBuiltBuildings } from '../features/gameboard/playerSlice'
+import { updatePlayerBuildingTurns, updatePlayerBuilding, updatePlayerUnitTurns, updatePlayerTraining, addPlayerUnits, updatePlayerBuiltBuildings, clearPlayerBuildings, clearPlayerUnits, updatePlayerPopulation } from '../features/gameboard/playerSlice'
 
 const BOARD_SIZE = 14
 
@@ -38,9 +38,14 @@ export default function GameBoard() {
         return gameBoardArray
         
     }
-    const _handleStart=(restart)=>{
+    const _handleStart=()=>{
         dispatch(incrementTurn("new game"))
         dispatch(updateGameBoard(createNewGameBoard()))
+        dispatch(updatePlayerTraining([]))
+        dispatch(updatePlayerBuilding([]))
+        dispatch(clearPlayerBuildings())
+        dispatch(clearPlayerUnits())
+        
         
     }
 
@@ -54,6 +59,9 @@ export default function GameBoard() {
                     newQueue.splice(0,1)
                     dispatch(updatePlayerBuilding(newQueue))
                     dispatch(updatePlayerBuiltBuildings(pbuildingqueue[0]))
+                    if(pbuildingqueue[0].building==="house"){
+                        dispatch(updatePlayerPopulation(1))
+                    }
                 }
             }
         }
@@ -71,9 +79,6 @@ export default function GameBoard() {
                 }
             }
         }
-
-        
-        // dispatch(updatePlayerTraingingSpeeds("worker"))
         dispatch(incrementTurn())
 
     }
@@ -86,7 +91,7 @@ export default function GameBoard() {
                 </h1>
                 {gameState ? 
                     <div className="button-row">
-                        <button onClick={()=>_handleStart(1)}>Restart</button>
+                        <button onClick={()=>_handleStart(true)}>Restart</button>
                         <button onClick={()=>_handleTurnEnd()}>End Turn</button>
                     </div>
                     :
@@ -114,9 +119,7 @@ export default function GameBoard() {
                         </div>
                     ))}
                 </div>
-                <div >
                     {gameState? <PlayerInformation />: null}
-                </div>
             </div>
         </div>
     )
