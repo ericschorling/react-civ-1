@@ -4,11 +4,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import {updateGameBoard } from '../features/gameboard/gameboardSlice'
 import { copyGameBoard } from '../app/functions/copyBoard'
 import { updatePlayerBuilding } from '../features/gameboard/playerSlice'
-// const TOP_MARGIN = 102
-// const TILE_SIZE = 52
+
 const BUILDING_ARRAY = ["farm", "house", "barracks"]
-
-
 
 export default function Tile(props){
     const board = useSelector((state) => state.gameBoard.board)
