@@ -186,9 +186,10 @@ button {
 
 .grass{
   background: green;
-    height: 50px;
-    width: 50px;
-    border: 1px solid black;
+  height: 50px;
+  width: 50px;
+  border: 1px solid black;
+  color: green;
 }
 
 .house{
@@ -292,3 +293,14 @@ button {
   min-width: 50%;
 }
 
+.attack-button{
+  border: 2px solid black;
+  border-radius:10px;
+  background-color: lightcoral;
+  color: white;
+  text-align: center;
+  padding-top: 25%;
+  height: 50px;
+  width: 150px;
+  margin-top: 20px;
+}

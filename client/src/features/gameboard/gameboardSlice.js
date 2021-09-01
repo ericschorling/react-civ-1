@@ -6,6 +6,8 @@ export const gameboardSlice = createSlice({
         gameState: undefined,
         turn: 0,
         board: [],
+        winState:"playing",
+        attacked: false
     },
     reducers: {
         updateGameBoard: (state, action) => {
@@ -29,10 +31,25 @@ export const gameboardSlice = createSlice({
         },
         removeBuilding: (state, action)=>{
             state.board[action.payload[0]][action.payload[1]].style = 'grass'
+        },
+        setWinState: (state, action)=>{
+            state.winState = action.payload
+        },
+        updateAttackedState: (state,action)=>{
+            state.attacked = action.payload
         }
     }
 })
 
-export const { updateGameBoard, incrementTurn, setGameState, updateGameTile, updateBuildingTurn, removeBuilding } = gameboardSlice.actions
+export const { 
+    updateGameBoard, 
+    incrementTurn, 
+    setGameState, 
+    updateGameTile, 
+    updateBuildingTurn, 
+    removeBuilding,
+    setWinState,
+    updateAttackedState    
+} = gameboardSlice.actions
 
 export default gameboardSlice.reducer

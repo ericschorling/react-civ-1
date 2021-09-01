@@ -3,8 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 export const playerSlice = createSlice({
     name: 'players',
     initialState: {
-        playerHealth: 100,
-        enemyHealth: 100,
+        playerName:'player',
+        playerHealth: 50,
+        enemyHealth: 20,
         playerPopulation: 4,
         enemyPopulation: 4,
         playerTrainingQueue: [],
@@ -180,7 +181,9 @@ export const {
     updateEnemyBuildingTurn,
     updateEnemyBuildings,
     addEnemyBuilding,
-    addEnemyBuildingQueue
+    addEnemyBuildingQueue,
+    
+
 } = playerSlice.actions
 
 export default playerSlice.reducer

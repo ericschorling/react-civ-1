@@ -1,15 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
+import ReactModal from 'react-modal'
 import Tile from './Tile'
 import { isPlayerCastle } from '../styles/tileStyles'
 import { useDispatch, useSelector } from 'react-redux'
-import {setGameState, updateGameBoard, incrementTurn, updateBuildingTurn} from '../features/gameboard/gameboardSlice'
+import {
+    setGameState, 
+    updateGameBoard, 
+    incrementTurn, 
+    updateBuildingTurn, 
+    updateAttackedState, 
+    setWinState
+} from '../features/gameboard/gameboardSlice'
 import { PlayerInformation } from './PlayerInformation'
 import { EnemyInformation } from './EnemyInformation'
 import { copyGameBoard } from '../app/functions/copyBoard'
 import {
     pickBuildingLocation,
     pickBuilding,
-    pickUnit 
+    pickUnit, 
+    getRandomNumber
 }from '../app/functions/enemyPlayLogic'
 import { 
     updatePlayerBuildingTurns, 
@@ -30,14 +39,19 @@ import {
     updateEnemyBuildingTurn,
     updateEnemyBuildings,
     addEnemyBuilding,
-    addEnemyBuildingQueue
+    addEnemyBuildingQueue,
+    updatePlayerHeath,
+    udpateEnemyHealth
 
 } from '../features/gameboard/playerSlice'
 
 const BOARD_SIZE = 14
+const ATTACK_SUCCESS_PROBABILITY = .8
+const DEFENDING_SUCCESS_PROBABILITY =.2
 
 
 export default function GameBoard() {
+
     //const [gameBoard, setGameBoard ] = useState([])
     const board = useSelector((state) => state.gameBoard.board)
     const pbuildingqueue = useSelector((state) => state.players.playerBuildingQueue)
@@ -47,8 +61,6 @@ export default function GameBoard() {
     const playerPopulation = useSelector((state)=> state.players.playerPopulation)
 
     //Enemy Informaiton
-    const enemyPopulation = useSelector((state)=>state.players.enemyPopulation)
-    const enemyHealth = useSelector((state)=> state.players.enemyHealth)
     const enemyTrainingQueue = useSelector((state)=> state.players.enemyTrainingQueue)
     const enemyBuildingQueue = useSelector((state)=> state.players.enemyBuildingQueue)
     const enemyBuildingSpeeds = useSelector((state)=> state.players.enemyBuildingSpeeds)
@@ -58,6 +70,18 @@ export default function GameBoard() {
     const unitModifier = useSelector ((state) => state.players.modifiers.units)
     const buildingModifiers = useSelector ((state) => state.players.modifiers.buildings)
     const dispatch = useDispatch()
+
+    //modal dependencies
+    const attacked = useSelector((state)=> state.gameBoard.attacked)
+    const [modalOpenState, setModalState]= useState(false)
+    const [attacker, setAttacker] = useState('')
+    const [damageDealt, setDamageDealt] = useState(0)
+    const warriorStrength = useSelector((state)=>state.players.modifiers.units.warrior.power)
+    const enemyHealth = useSelector((state)=>state.players.enemyHealth)
+    const playerHealth = useSelector((state)=>state.players.playerHealth)
+    const playerUnits = useSelector((state)=>state.players.playerUnits)
+    const winState = useSelector((state)=>state.gameBoard.winState)
+    
     
     
     const createNewGameBoard = ()=> {
@@ -112,8 +136,7 @@ export default function GameBoard() {
             }
         }
     }
-
-    const enemyTurnActions=()=>{
+    const enemyTrainUnit=()=>{
         const setUnitTrainingSpeed =(unit)=>{
             let trainingTurns = 0
             for(const building of enemyBuildings){
@@ -136,6 +159,8 @@ export default function GameBoard() {
             dispatch(addEnemyUnitTraining(pickUnit(enemyTrainingQueue, setUnitTrainingSpeed)))
             console.log(pickUnit(enemyTrainingQueue, setUnitTrainingSpeed))
         }
+    }
+    const enemyConstructBuilding=()=>{
         const getSpeedModifiers =(building)=>{
             let turns = 0
             for(const unit of enemyUnits){
@@ -161,16 +186,40 @@ export default function GameBoard() {
                 let boardLocation =  pickBuildingLocation(enemyBuildingLocations)
                 newBoard[boardLocation[0]][boardLocation[1]] = tile
                 dispatch(updateGameBoard(newBoard))
+                let newBuildList = [...enemyBuildingLocations]
+                newBuildList.splice(newBuildList.indexOf(boardLocation),1)
+                console.log("indexof",newBuildList.indexOf(boardLocation))
+                dispatch(updateEnemyBuildingLocations(newBuildList))
             }else {
                 dispatch(updateEnemyBuildingTurn())
             }
         }else {
             dispatch(addEnemyBuildingQueue(pickBuilding( enemyBuildingQueue, getSpeedModifiers)))
-            console.log(pickBuilding(enemyBuildingQueue, getSpeedModifiers))
         }
-
-
+        
     }
+    const enemyAttack=()=>{
+        const calcAttack =(attackerUnits)=>{
+            let attackPower = 0
+            attackPower += attackerUnits.length? attackerUnits.filter(unit => unit.unit === "warrior").length * warriorStrength:null
+            return attackPower
+        }
+        if(calcAttack(enemyUnits)>0){
+            
+                let chance = getRandomNumber()
+                if(chance < 20){
+                    _handleAttackClick("enemy")
+                }
+            
+
+        }
+    }
+    const enemyTurnActions=()=>{
+        enemyTrainUnit()
+        enemyConstructBuilding()
+        enemyAttack()
+    }
+    
     const _handleStart=()=>{
         dispatch(incrementTurn("new game"))
         dispatch(updateGameBoard(createNewGameBoard()))
@@ -181,11 +230,49 @@ export default function GameBoard() {
         
         
     }
+    const _handleAttackClick=(attacker)=>{
+    
+        setModalState(true)
+        setAttacker(attacker)
+        
+        console.log(attacked)
+        const calcAttack =(attackerUnits)=>{
+            let attackPower = 0
+            attackPower += attackerUnits.length? attackerUnits.filter(unit => unit.unit === "warrior").length * warriorStrength:null
+            return attackPower
+        }
 
+        const dealAttackerDamage=()=>{
+            let damage =0
+            if(attacker ==="player"){
+                damage = Math.floor(calcAttack(playerUnits)*ATTACK_SUCCESS_PROBABILITY - calcAttack(enemyUnits) * DEFENDING_SUCCESS_PROBABILITY)
+                setDamageDealt(damage)
+                dispatch(udpateEnemyHealth(damage))
+                if(enemyHealth - damage <= 0){
+                    dispatch(setWinState("win"))
+                }
+            }
+            if(attacker ==="enemy"){
+                damage = Math.floor((calcAttack(enemyUnits)*ATTACK_SUCCESS_PROBABILITY) - (calcAttack(playerUnits) * DEFENDING_SUCCESS_PROBABILITY))
+                setDamageDealt(damage)
+                dispatch(updatePlayerHeath(damage))
+                if(playerHealth - damage <= 0){
+                    dispatch(setWinState("lose"))
+                }
+            }
+        }
+        dealAttackerDamage()
+
+    }
+    const _handleModalClose=()=>{
+        setModalState(false)
+        dispatch(updateAttackedState(true))
+    }
     const _handleTurnEnd =()=>{
         enemyTurnActions()
         playerTurnAdvance()
         dispatch(incrementTurn())
+        dispatch(updateAttackedState(false))
 
     }
 
@@ -209,7 +296,6 @@ export default function GameBoard() {
                 <div className="game-space">   
                 {gameState ? <EnemyInformation/> : null}
                 <div 
-                    // onMouseMove={(e)=>_handleMouseMove([e.clientX,e.clientY])} 
                     className="gameboard-container">
                     {board.map((tileArray,key)=>(
                         <div className="row" key={key}>
@@ -224,10 +310,43 @@ export default function GameBoard() {
                             ))}
                         </div>
                     ))}
+                    {gameState ? 
+                        <div className="attack-area">
+                            <div className="attack-button" onClick={()=>_handleAttackClick("player")} >Attack!!</div>
+                        </div> 
+                        : 
+                        null
+                    }
                 </div>
                     {gameState? <PlayerInformation />: null}
             </div>
+            <ReactModal
+                    style={{
+                        content: {
+                            height:'240px',
+                            width: '220px',
+                            top: window.innerHeight/2,
+                            left: window.innerWidth/2
+                        }
+                    }}
+                    isOpen={modalOpenState} 
+                >
+                {!attacked ? 
+                <div>
+                    <div>{attacker} Attacked!!</div>
+                    <div>{attacker} Dealt {damageDealt} Damage</div>
+                    <div>{attacker!=="player"? "player":"enemy"} has {attacker==="player"? enemyHealth : playerHealth} health remaining</div>
+                    {winState!=="playing"? <div>You {winState}</div> : null}
+                    <button onClick={()=>_handleModalClose()}>Close</button>
+                </div> :
+                <div>
+                    <div>You've Already Attacked</div>
+                    <button onClick={()=>setModalState(false)}>Close</button>
+                </div>
+                }
+            </ReactModal>
         </div>
     )
 
 }
+//
