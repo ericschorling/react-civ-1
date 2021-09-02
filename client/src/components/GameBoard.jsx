@@ -43,7 +43,6 @@ import {
     updatePlayerHeath,
     udpateEnemyHealth,
     reduceTrainingTime,
-    reduceBuildingTime
 
 } from '../features/gameboard/playerSlice'
 
