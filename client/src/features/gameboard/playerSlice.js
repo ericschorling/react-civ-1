@@ -5,7 +5,7 @@ export const playerSlice = createSlice({
     initialState: {
         playerName:'Player',
         playerHealth: 50,
-        enemyHealth: 20,
+        enemyHealth: 50,
         playerPopulation: 4,
         enemyPopulation: 4,
         playerTrainingQueue: [],
@@ -69,7 +69,7 @@ export const playerSlice = createSlice({
             farm: 5,
             barracks: 6,
             worker: 3,
-            warrior: 8
+            warrior: 5
         }
     },
     reducers: {

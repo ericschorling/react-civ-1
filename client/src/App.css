@@ -163,8 +163,9 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid blue;
+  border: 2px solid var(--light-border);
   border-radius: var(--border-radius);
+  background-color: var(--primary);
   height: 20px;
   width: 50px;
 

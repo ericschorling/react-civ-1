@@ -163,6 +163,7 @@ export default function GameBoard() {
     const getPlayerPower=()=>{
         let playerArmy = playerUnits.length ? playerUnits.filter(unit => unit.unit === "warrior") : []
         let totalPower = playerArmy.length ? playerArmy.length * warriorStrength : 0
+        console.log("power", totalPower)
         return totalPower
     }
     const enemyTrainUnit=()=>{
@@ -272,7 +273,7 @@ export default function GameBoard() {
 
         const dealAttackerDamage=()=>{
             let damage =0
-            if(attacker ==="player"){
+            if(attacker ===playerName && !attacked){
                 damage = Math.floor(calcAttack(playerUnits)*ATTACK_SUCCESS_PROBABILITY - calcAttack(enemyUnits) * DEFENDING_SUCCESS_PROBABILITY)
                 setDamageDealt(damage)
                 let health = enemyHealth
@@ -302,7 +303,7 @@ export default function GameBoard() {
     }
     const _handleModalClose=()=>{
         setModalState(false)
-        if(attacker ==="player"){
+        if(attacker ===playerName){
             dispatch(updateAttackedState(true))
         }
 
@@ -395,7 +396,7 @@ export default function GameBoard() {
                     <div className="attack-modal">
                         <h3>{attacker!==playerName?"Enemy":playerName} Attacked!!</h3>
                         <div>{attacker!==playerName?"Enemy":playerName} Dealt {damageDealt} Damage</div>
-                        <div>{attacker!==playerName? playerName:"Enemy"} has {attacker==="player"? enemyHealth : playerHealth} health.</div>
+                        <div>{attacker!==playerName? playerName:"Enemy"} has {attacker===playerName? enemyHealth : playerHealth} health.</div>
                         <button className="turn-button" onClick={()=>_handleModalClose()}>Close</button>
                     </div>
                 : 
@@ -430,7 +431,7 @@ export default function GameBoard() {
                 >
                 
                 <div className="turn-over">
-                    <h1>Turn {turn} Ended</h1>
+                    <h1>Turn {turn-1} Ended</h1>
                 </div>
             </ReactModal>
         </div>
