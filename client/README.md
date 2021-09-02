@@ -1,6 +1,6 @@
 <h1>Foundation</h1>
 <img src="public/assets/frontpage.png">
-<p>Its here: 
+<p>Its here: https://cocky-panini-e70579.netlify.app</p>
 
 <h2><u>Overview:</u></h2>
 <p>In foundation you are playing against an evil AI that is trying to conquer your land. The setup is simple but the unknowable nature of your opponent makes success difficult. You must build your city and yrain your people to fight. When you're ready, ATTACK, and defeat your enemy.</p>
