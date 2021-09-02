@@ -73,6 +73,9 @@ export const playerSlice = createSlice({
         }
     },
     reducers: {
+        updatePlayerName: (state, action) => {
+            state.playerName = action.payload
+        },
         updatePlayerTrainingQueue: (state, action) => {
             state.playerTrainingQueue.push(action.payload) 
         },
@@ -156,7 +159,8 @@ export const playerSlice = createSlice({
     }
 })
 
-export const { 
+export const {
+    updatePlayerName, 
     updatePlayerTrainingQueue, 
     updatePlayerBuilding, 
     updatePlayerTraingingSpeeds, 

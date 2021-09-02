@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import ReactModal from 'react-modal'
 import Tile from './Tile'
+import { Link } from 'react-router-dom'
 import { isPlayerCastle } from '../styles/tileStyles'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -37,7 +38,6 @@ import {
     updateEnemyBuildingLocations,
     updateEnemyBuildingQueue,
     updateEnemyBuildingTurn,
-    updateEnemyBuildings,
     addEnemyBuilding,
     addEnemyBuildingQueue,
     updatePlayerHeath,
@@ -52,13 +52,13 @@ const DEFENDING_SUCCESS_PROBABILITY =.2
 
 export default function GameBoard() {
 
-    //const [gameBoard, setGameBoard ] = useState([])
     const board = useSelector((state) => state.gameBoard.board)
     const pbuildingqueue = useSelector((state) => state.players.playerBuildingQueue)
     const ptrainingqueue = useSelector((state)=> state.players.playerTrainingQueue)
     const gameState = useSelector((state) => state.gameBoard.gameState)
     const trainedUnits = useSelector((state)=> state.players.playerUnits)
     const playerPopulation = useSelector((state)=> state.players.playerPopulation)
+    const turn = useSelector((state)=> state.gameBoard.turn)
 
     //Enemy Informaiton
     const enemyTrainingQueue = useSelector((state)=> state.players.enemyTrainingQueue)
@@ -135,6 +135,11 @@ export default function GameBoard() {
                 }
             }
         }
+    }
+    const getPlayerPower=()=>{
+        let playerArmy = playerUnits.length ? playerUnits.filter(unit => unit.unit === "warrior") : []
+        let totalPower = playerArmy.length ? playerArmy.length * warriorStrength : 0
+        return totalPower
     }
     const enemyTrainUnit=()=>{
         const setUnitTrainingSpeed =(unit)=>{
@@ -247,9 +252,11 @@ export default function GameBoard() {
             if(attacker ==="player"){
                 damage = Math.floor(calcAttack(playerUnits)*ATTACK_SUCCESS_PROBABILITY - calcAttack(enemyUnits) * DEFENDING_SUCCESS_PROBABILITY)
                 setDamageDealt(damage)
+                let health = enemyHealth
                 dispatch(udpateEnemyHealth(damage))
                 if(enemyHealth - damage <= 0){
                     dispatch(setWinState("win"))
+                    dispatch(udpateEnemyHealth(health))
                 }
             }
             if(attacker ==="enemy"){
@@ -278,45 +285,59 @@ export default function GameBoard() {
 
     return (
         <div className="gameboard">
-            <div className="board-header">
-                <h1>
-                    Foundation
-                </h1>
+            <nav>
+                <Link to="/">Home</Link>
+            </nav>
                 {gameState ? 
-                    <div className="button-row">
-                        <button onClick={()=>_handleStart(true)}>Restart</button>
-                        <button onClick={()=>_handleTurnEnd()}>End Turn</button>
-                    </div>
+                    null
                     :
-                    <button onClick={()=>_handleStart()}>
-                        Start Game
-                    </button>}
-                
-            </div>
-                <div className="game-space">   
-                {gameState ? <EnemyInformation/> : null}
-                <div 
-                    className="gameboard-container">
-                    {board.map((tileArray,key)=>(
-                        <div className="row" key={key}>
-                            {board[key].map((tile,key2)=>(
-                                <Tile 
-                                    key={key2} 
-                                    location={[key,key2]}
-                                    style={tile.style}
-                                    className={tile.style}
-                                ></Tile>
-
-                            ))}
+                    <div className="board-header">
+                        <div className="start-button" onClick={()=>_handleStart()}>
+                            Start Game
                         </div>
-                    ))}
-                    {gameState ? 
-                        <div className="attack-area">
-                            <div className="attack-button" onClick={()=>_handleAttackClick("player")} >Attack!!</div>
-                        </div> 
-                        : 
-                        null
-                    }
+                    </div>}
+                
+            
+                {gameState ? <h1>Let's Play!</h1> : null}
+                <div className="game-space">
+                    
+                    {gameState ? <EnemyInformation/> : null}
+                    
+                    <div className="gameboard-container">
+                    {gameState ?
+                        <div className="game-information">
+                            <p>Power: {`${getPlayerPower()}`}</p>
+                            <p>Health: {playerHealth}</p>
+                            <p>Population: {`${playerUnits.length} / ${playerPopulation}`}
+                            </p>
+                            <p>Turn: {turn}</p>
+                        </div>
+                    : null}
+                    {gameState ?
+                        <div className="gameboard-actual">
+                            {board.map((tileArray,key)=>(
+                                <div className="row" key={key}>
+                                    {board[key].map((tile,key2)=>(
+                                        <Tile 
+                                            key={key2} 
+                                            location={[key,key2]}
+                                            style={tile.style}
+                                            className={tile.style}
+                                        ></Tile>
+
+                                    ))}
+                                </div>
+                            ))}
+                        </div> : null}
+                        {gameState ? 
+                            <div className="button-row">
+                                <div className="attack-button" onClick={()=>_handleAttackClick("player")} >Attack!!</div>
+                                <div className="turn-button"onClick={()=>winState === "playing" ? _handleTurnEnd() : null}>End Turn</div>
+                                
+                            </div>
+                            : 
+                            null
+                        }
                 </div>
                     {gameState? <PlayerInformation />: null}
             </div>
@@ -333,11 +354,23 @@ export default function GameBoard() {
                 >
                 {!attacked ? 
                 <div>
-                    <div>{attacker} Attacked!!</div>
-                    <div>{attacker} Dealt {damageDealt} Damage</div>
-                    <div>{attacker!=="player"? "player":"enemy"} has {attacker==="player"? enemyHealth : playerHealth} health remaining</div>
-                    {winState!=="playing"? <div>You {winState}</div> : null}
-                    <button onClick={()=>_handleModalClose()}>Close</button>
+                {winState!=="playing"? <div>You {winState}</div> : null}
+                    {winState === "playing" ?
+                    <div>
+                        <div>{attacker} Attacked!!</div>
+                        <div>{attacker} Dealt {damageDealt} Damage</div>
+                        <div>{attacker!=="player"? "player":"enemy"} has {attacker==="player"? enemyHealth : playerHealth} health remaining</div>
+                        <button onClick={()=>_handleModalClose()}>Close</button>
+                    </div>
+                : 
+                    <div>
+                        <div>What do you want to do now?</div>
+                        <div>
+                            <button >New Game</button>
+                            <button onClickonClick={()=>_handleStart(true)}><a href="/Home">Exit</a></button>
+                           
+                        </div>
+                    </div>}
                 </div> :
                 <div>
                     <div>You've Already Attacked</div>
