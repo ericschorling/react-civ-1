@@ -8,7 +8,8 @@ export const gameboardSlice = createSlice({
         board: [],
         winState:"playing",
         attacked: false,
-        tutorialShow: false
+        tutorialShow: false,
+        spied: false
     },
     reducers: {
         updateGameBoard: (state, action) => {

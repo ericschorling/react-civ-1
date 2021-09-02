@@ -41,7 +41,9 @@ import {
     addEnemyBuilding,
     addEnemyBuildingQueue,
     updatePlayerHeath,
-    udpateEnemyHealth
+    udpateEnemyHealth,
+    reduceTrainingTime,
+    reduceBuildingTime
 
 } from '../features/gameboard/playerSlice'
 
@@ -59,6 +61,7 @@ export default function GameBoard() {
     const trainedUnits = useSelector((state)=> state.players.playerUnits)
     const playerPopulation = useSelector((state)=> state.players.playerPopulation)
     const turn = useSelector((state)=> state.gameBoard.turn)
+    const [turnEnd, setTurnEnd] = useState(false)
 
     //Enemy Informaiton
     const enemyTrainingQueue = useSelector((state)=> state.players.enemyTrainingQueue)
@@ -81,6 +84,7 @@ export default function GameBoard() {
     const playerHealth = useSelector((state)=>state.players.playerHealth)
     const playerUnits = useSelector((state)=>state.players.playerUnits)
     const winState = useSelector((state)=>state.gameBoard.winState)
+    const playerName = useSelector((state)=>state.players.playerName)
     
     
     
@@ -116,6 +120,26 @@ export default function GameBoard() {
                     if(pbuildingqueue[0].building==="house"){
                         dispatch(updatePlayerPopulation(1))
                     }
+                    if(pbuildingqueue[0].building ==="barracks"){
+                        let newTrainingQueue = [...ptrainingqueue]
+                        for(let x= 0; x< newTrainingQueue.length; x++){
+                            if(newTrainingQueue[x].unit ==="warrior"){
+                                if(newTrainingQueue[x].turns > 1){
+                                    dispatch(reduceTrainingTime(x))
+                                }
+                            }
+                        }
+                    }
+                    if(pbuildingqueue[0].building ==="farm"){
+                        
+                        for(let x= 0; x< ptrainingqueue.length; x++){
+                            if(ptrainingqueue[x].unit ==="worker"){
+                                if(ptrainingqueue[x].turns > 1){
+                                    dispatch(reduceTrainingTime(x))
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -131,6 +155,7 @@ export default function GameBoard() {
                         dispatch(updatePlayerTraining(newQueue))
                         console.log(ptrainingqueue[0])
                         dispatch(addPlayerUnits(ptrainingqueue[0]))
+
                     }
                 }
             }
@@ -240,7 +265,6 @@ export default function GameBoard() {
         setModalState(true)
         setAttacker(attacker)
         
-        console.log(attacked)
         const calcAttack =(attackerUnits)=>{
             let attackPower = 0
             attackPower += attackerUnits.length? attackerUnits.filter(unit => unit.unit === "warrior").length * warriorStrength:null
@@ -271,15 +295,25 @@ export default function GameBoard() {
         dealAttackerDamage()
 
     }
+    const triggerTurnEnded=()=>{
+        setTurnEnd(true)
+        setTimeout(function(){
+            setTurnEnd(false)
+        }, 1000)
+    }
     const _handleModalClose=()=>{
         setModalState(false)
-        dispatch(updateAttackedState(true))
+        if(attacker ==="player"){
+            dispatch(updateAttackedState(true))
+        }
+
     }
     const _handleTurnEnd =()=>{
         enemyTurnActions()
         playerTurnAdvance()
         dispatch(incrementTurn())
         dispatch(updateAttackedState(false))
+        triggerTurnEnded()
 
     }
 
@@ -331,7 +365,7 @@ export default function GameBoard() {
                         </div> : null}
                         {gameState ? 
                             <div className="button-row">
-                                <div className="attack-button" onClick={()=>_handleAttackClick("player")} >Attack!!</div>
+                                <div className="attack-button" onClick={()=>_handleAttackClick(playerName)} >Attack!!</div>
                                 <div className="turn-button"onClick={()=>winState === "playing" ? _handleTurnEnd() : null}>End Turn</div>
                                 
                             </div>
@@ -344,39 +378,61 @@ export default function GameBoard() {
             <ReactModal
                     style={{
                         content: {
-                            height:'240px',
+                            height:'200px',
                             width: '220px',
-                            top: window.innerHeight/2,
-                            left: window.innerWidth/2
+                            top: window.innerHeight/2.4,
+                            left: window.innerWidth/2.4,
+                            display: "flex",
+                            justifyContent:"center",
+                            alignItems: "center"
                         }
                     }}
                     isOpen={modalOpenState} 
                 >
                 {!attacked ? 
-                <div>
-                {winState!=="playing"? <div>You {winState}</div> : null}
+                <div className="attack-modal">
+                {winState!=="playing"? <div>You {winState}!!!</div> : null}
                     {winState === "playing" ?
-                    <div>
-                        <div>{attacker} Attacked!!</div>
-                        <div>{attacker} Dealt {damageDealt} Damage</div>
-                        <div>{attacker!=="player"? "player":"enemy"} has {attacker==="player"? enemyHealth : playerHealth} health remaining</div>
-                        <button onClick={()=>_handleModalClose()}>Close</button>
+                    <div className="attack-modal">
+                        <h3>{attacker!==playerName?"Enemy":playerName} Attacked!!</h3>
+                        <div>{attacker!==playerName?"Enemy":playerName} Dealt {damageDealt} Damage</div>
+                        <div>{attacker!==playerName? playerName:"Enemy"} has {attacker==="player"? enemyHealth : playerHealth} health.</div>
+                        <button className="turn-button" onClick={()=>_handleModalClose()}>Close</button>
                     </div>
                 : 
-                    <div>
+                    <div className="attack-modal">
                         <div>What do you want to do now?</div>
                         <div>
-                            <button >New Game</button>
-                            <button onClickonClick={()=>_handleStart(true)}><a href="/Home">Exit</a></button>
+                            <button className="start-button" >New Game</button>
+                            <button className="attack-button" onClickonClick={()=>_handleStart(true)}><a href="/">Exit</a></button>
                            
                         </div>
                     </div>}
                 </div> :
-                <div>
+                <div className="attack-modal">
                     <div>You've Already Attacked</div>
-                    <button onClick={()=>setModalState(false)}>Close</button>
+                    <button className="turn-button" onClick={()=>setModalState(false)}>Close</button>
                 </div>
                 }
+            </ReactModal>
+            <ReactModal
+                    style={{
+                        content: {
+                            height: '100px',
+                            width: '220px',
+                            top: window.innerHeight/2.4,
+                            left: window.innerWidth/2.4,
+                            display: "flex",
+                            justifyContent:"center",
+                            alignItems: "center"
+                        }
+                    }}
+                    isOpen={turnEnd} 
+                >
+                
+                <div className="turn-over">
+                    <h1>Turn {turn} Ended</h1>
+                </div>
             </ReactModal>
         </div>
     )

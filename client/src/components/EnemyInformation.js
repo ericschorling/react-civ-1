@@ -2,18 +2,19 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 export const EnemyInformation = () => {
-    const enemyBuildQueue = useSelector((state)=>state.players.enemyBuildingQueue)
-    const enemyTrainingQueue = useSelector((state)=>state.players.enemyTrainingQueue)
+    // const enemyBuildQueue = useSelector((state)=>state.players.enemyBuildingQueue)
+    // const enemyTrainingQueue = useSelector((state)=>state.players.enemyTrainingQueue)
     const enemyUnits = useSelector((state)=>state.players.enemyUnits)
     const warriorStrength = useSelector((state)=>state.players.modifiers.units.warrior.power)
     const enemyHealth = useSelector((state)=>state.players.enemyHealth)
+    
     return (
         <div className="enemy-information">
             <h1>Enemy</h1>
             <h3>Power: {enemyUnits.length? enemyUnits.filter(unit => unit.unit === "warrior").length * warriorStrength:null}</h3>
             <h3>Health: {enemyHealth}</h3>
-            <h2>Building Queue</h2>
-            {enemyBuildQueue.length? enemyBuildQueue.map((building, key)=>(
+            {/* {<h2>Building Queue</h2>
+            {spied ? enemyBuildQueue.length? enemyBuildQueue.map((building, key)=>(
                     <div key={key} className="queue-image">
                         <img
                             className="building-image" 
@@ -36,7 +37,7 @@ export const EnemyInformation = () => {
                     </div>
                 )):null
                 }
-            </div>
+            </div> : null}
             <h3>Units Available</h3>
             <div className="unit-display">
                 {enemyUnits.length ? enemyUnits.map((unit, key)=>(
@@ -51,7 +52,7 @@ export const EnemyInformation = () => {
                     </div>
                 )):null
                 }
-                </div>
+                </div> */}
                 
         </div>
     )

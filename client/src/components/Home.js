@@ -32,14 +32,14 @@ export const Home =() => {
                 <p>It is time to take on the enemy in a game of chance and skill.</p>
             </div>
             
-            {playerName === "player" ?
-                <>
+            {playerName === "Player" ?
+                <div className="name">
                     <div>Tell me your name?</div>
-                    <form>
+                    <form className="name">
                         <input onChange={(e)=>_handleChange(e.target.value)}></input>
-                        <input type="submit" value="That's Me" onClick={(e)=>_handleNameSubmit(e)}></input>
+                        <button className="start-button" type="submit" value="That's Me" onClick={(e)=>_handleNameSubmit(e)}>That's Me</button>
                     </form> 
-                </> :
+                </div> :
                 <div> Welcome {playerName}</div>
                 }
             <div className="startGame">

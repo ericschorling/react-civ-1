@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const playerSlice = createSlice({
     name: 'players',
     initialState: {
-        playerName:'player',
+        playerName:'Player',
         playerHealth: 50,
         enemyHealth: 20,
         playerPopulation: 4,
@@ -154,6 +154,9 @@ export const playerSlice = createSlice({
         },
         updateEnemyBuildings:(state, action)=>{
             state.enemyBuildings = action.payload
+        },
+        reduceTrainingTime: (state,action)=>{
+            state.playerTrainingQueue[action.payload].turns -=1
         }
 
     }
@@ -186,7 +189,8 @@ export const {
     updateEnemyBuildings,
     addEnemyBuilding,
     addEnemyBuildingQueue,
-    
+    reduceTrainingTime,
+    reduceBuildingTime
 
 } = playerSlice.actions
 

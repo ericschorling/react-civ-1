@@ -73,8 +73,8 @@ export default function Tile(props){
                     content: {
                         height:'240px',
                         width: '220px',
-                        top: window.innerHeight/2,
-                        left: window.innerWidth/2
+                        top: window.innerHeight/2.4,
+                        left: window.innerWidth/2.4
                     }
                 }}
                 isOpen={modalOpenState} 

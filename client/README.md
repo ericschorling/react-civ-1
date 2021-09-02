@@ -1,70 +1,70 @@
-# Getting Started with Create React App
+<h1>Foundation</h1>
+<img src="public/assets/frontpage.png">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h2><u>Overview:</u></h2>
+<p>In foundation you are playing against an evil AI that is trying to conquer your land. The setup is simple but the unknowable nature of your opponent makes success difficult. You must build your city and yrain your people to fight. When you're ready, ATTACK, and defeat your enemy.</p>
+<br>
+    
+<h2><u>The Team:</u></h2>
+<h3>Eric Schorling: https://github.com/ericschorling</h3>
+<p>Find him online at: https://ericschorling.dev</p>
+<p><b>Primary Team Role:</b>Lead Developer and Data Scientist</p>
+<p><b>Contributions:</b> Built the whole thing. Developed game logic. Created design, such as it is.</p>
+<br>
 
-## Available Scripts
+<h2><u>What We Used:</u></h2>
+<h3>Languages:</h3>
+<ul>
+    <li>HTML5</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+    <li>React</li>
+    <li>Redux</li>
+</ul>
+<br>
 
-In the project directory, you can run:
+<h2><u>MVP (Minimum Viable Product):</u></h2>
+<ul>
+    <li>Functional Game that has a specific win condition</li>
+    <li>Ability to play multiple games.</li>
+    <li>Able to travel around the site and not lose your place in the game.</li>
+</ul>
+<br>
 
-### `yarn start`
+<h2><u>Stretch Goals Completed:</u></h2>
+<ul>
+    <li>Change in the turns based on building built</li>
+    <li>Enemy play logic that is not predetermined.</li>
+    <li>Ability to cancel buildings from gameboard.</li>
+</ul>
+<br>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<h2><u>Stretch Goals Future:</u></h2>
+<ul>
+    <li>Add in additional units and buildings.</li>
+    <li>Allow player to "spy".</li>
+    <li>Advance the play mechanics and AI logic.</li>
+    <li>Add backend to store global variables and add save feature.</li>
+</ul>
+<br>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<h2><u>Challenges & Solutions:</u></h2>
+<h3>Some of the biggest challenges we faced with this project build included:</h2>
+<br>
+<p><b>Challenge:</b> Build the game board to accept changes. </p>
+<p><b>Solution:</b>Utilized Redux to save state. Included ways for the board to update but also stayed static as the game was played, only rerendered on refresh. Utilized a grid of divs rather than trying to build one large item and then updating that.</p>
+<br>
+<p><b>Challenge:</b> Create an AI that plays the game.</p>
+<p><b>Solution:</b> Wanted to make it a single player experience that didn't require any actions by the player. Built out the game logic as if it was played by the player and utilized probabilities and random number generators to provide for a unique experience. </p>
+<br>
 
-### `yarn test`
+<h2><u>Screenshots:</u></h2>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<h3>Game Board</h3>
+<img src="public/assets/gameboard.png">
 
-### `yarn build`
+<h3>Played Game</h3>
+<img src="public/assets/playedgame.png">
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<h3>Enemy Attack</h3>
+<img src="public/assets/enemyattack.png">

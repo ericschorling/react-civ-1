@@ -29,7 +29,7 @@ function App() {
         
       
       <footer className="footer-bar">
-        Made by Eric @ <a href="httpss://ericschorling.dev" 
+        Made by Eric @ <a href="https://ericschorling.dev" 
        >Here</a>
       </footer>
     </div>
