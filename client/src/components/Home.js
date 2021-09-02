@@ -11,7 +11,12 @@ export const Home =() => {
     const playerName = useSelector((state)=> state.players.playerName)
     const tutorial= useSelector((state) => state.gameBoard.tutorialShow)
     const _handleTutorialShow=()=>{
-        dispatch(updateTutorialState(true))
+        if(tutorial){
+            dispatch(updateTutorialState(false))
+        }else {
+            dispatch(updateTutorialState(true))
+        }
+       
     }
     const _handleChange=(e)=>{
         setPlayer(e)
@@ -37,7 +42,7 @@ export const Home =() => {
                 </> :
                 <div> Welcome {playerName}</div>
                 }
-            <div>
+            <div className="startGame">
                 <nav>
                     <Link className="start-button" to='/Foundation'>Let's Play</Link>
                     <div className="turn-button" onClick={()=>_handleTutorialShow()}>Tutorial</div>
