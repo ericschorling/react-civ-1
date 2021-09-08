@@ -13,7 +13,7 @@
 <p><b>Contributions:</b> Built the whole thing. Developed game logic. Created design, such as it is.</p>
 <br>
 
-<h2><u>What We Used:</u></h2>
+<h2><u>What I Used:</u></h2>
 <h3>Languages:</h3>
 <ul>
     <li>HTML5</li>
