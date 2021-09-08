@@ -2,6 +2,7 @@
   "name": "react-civ-1",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@reduxjs/toolkit": "^1.6.1",
     "cra-template": "1.1.2",
